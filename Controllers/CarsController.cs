@@ -1,26 +1,27 @@
-using gregglistc.Services;
+
 using gregglistc.Models;
+using gregglistc.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gregglistc.Controllers
 {
   [ApiController]
   [Route("/api/[controller]")]
-  public class HousesController : ControllerBase
+  public class CarsController : ControllerBase
   {
-    private readonly HousesServices _hs;
-    public HousesController(HousesServices hs)
+    private readonly CarsService _cs;
+    public CarsController(CarsService cs)
     {
-      _hs = hs;
+      _cs = cs;
     }
 
     [HttpGet]
-    public ActionResult<List<House>> GetAll()
+    public ActionResult<List<Car>> GetAll()
     {
       try
       {
-        List<House> houses = _hs.GetAll();
-        return Ok(houses);
+        List<Car> cars = _cs.GetAll();
+        return Ok(cars);
       }
       catch (Exception e)
       {
@@ -28,16 +29,15 @@ namespace gregglistc.Controllers
       }
     }
     [HttpGet("{id}")]
-    public ActionResult<House> GetById(string id)
+    public ActionResult<Car> GetById(string id)
     {
       try
       {
-        House house = _hs.GetById(id);
-        return Ok(house);
+        Car car = _cs.GetById(id);
+        return car;
       }
       catch (Exception e)
       {
-
         return BadRequest(e.Message);
       }
     }
@@ -46,36 +46,34 @@ namespace gregglistc.Controllers
     {
       try
       {
-        _hs.Delete(id);
-        return Ok("deleted");
-      }
-      catch (System.Exception e)
-      {
-
-        return BadRequest(e.Message);
-      }
-    }
-    [HttpPost]
-    public ActionResult<House> Create([FromBody] House newHouse)
-    {
-      try
-      {
-        House house = _hs.Create(newHouse);
-        return Ok(house);
+        _cs.Delete(id);
+        return "delete";
       }
       catch (Exception e)
       {
         return BadRequest(e.Message);
       }
     }
-
+    [HttpPost]
+    public ActionResult<Car> CreateCar([FromBody] Car newCar)
+    {
+      try
+      {
+        Car car = _cs.CreateCar(newCar);
+        return Ok(car);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
     [HttpPut("{id}")]
-    public ActionResult<House> Edit(string id, [FromBody] House updates)
+    public ActionResult<Car> Edit(string id, [FromBody] Car updates)
     {
       try
       {
         updates.Id = id;
-        House updated = _hs.Edit(updates);
+        Car updated = _cs.Edit(updates);
         return Ok(updated);
       }
       catch (Exception e)
@@ -83,6 +81,7 @@ namespace gregglistc.Controllers
         return BadRequest(e.Message);
       }
     }
+
 
   }
 }
